@@ -9,6 +9,10 @@ class BaseResponse(BaseModel):
     data: Any = None
 
 
+class TaskQueryRequest(BaseModel):
+    pass
+
+
 class TaskResponse(BaseResponse):
     class TaskResponseData(BaseModel):
         task_id: str
@@ -21,6 +25,36 @@ class TaskResponse(BaseResponse):
                 "status": 200,
                 "message": "success",
                 "data": {"task_id": "6c85c8cc-a77a-42b9-bc30-947815aa0558"},
+            },
+        }
+
+
+class TaskQueryResponse(BaseResponse):
+    class Config:
+        json_schema_extra = {
+            "example": {
+                "status": 200,
+                "message": "success",
+                "data": {
+                    "state": 1,
+                    "progress": 100,
+                    "file": "http://127.0.0.1:8080/tasks/6c85c8cc-a77a-42b9-bc30-947815aa0558/video.mp4"
+                },
+            },
+        }
+
+
+class TaskDeletionResponse(BaseResponse):
+    class Config:
+        json_schema_extra = {
+            "example": {
+                "status": 200,
+                "message": "success",
+                "data": {
+                    "state": 1,
+                    "progress": 100,
+                    "file": "http://127.0.0.1:8080/tasks/6c85c8cc-a77a-42b9-bc30-947815aa0558/video.mp4"
+                },
             },
         }
 

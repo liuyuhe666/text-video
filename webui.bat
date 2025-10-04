@@ -1,0 +1,1 @@
+uv run streamlit run ./webui/main.py --browser.gatherUsageStats=False --server.enableCORS=True
