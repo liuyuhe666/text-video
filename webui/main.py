@@ -16,6 +16,7 @@ font_dir = os.path.join(root_dir, "resource", "fonts")
 from app.model.schema import VideoRequest, VideoAspect  # NOQA: E402
 from app.util import util  # NOQA: E402
 from app.service import task as tm  # NOQA: E402
+from app.model.constant import VOICE_NAME_LIST  # NOQA: E402
 
 
 def init_log():
@@ -76,6 +77,23 @@ def open_task_folder(task_id):
         logger.error(e)
 
 
+def scroll_to_bottom():
+    js = """
+    <script>
+        console.log("scroll_to_bottom");
+        function scroll(dummy_var_to_force_repeat_execution){
+            var sections = parent.document.querySelectorAll('section.main');
+            console.log(sections);
+            for(let index = 0; index<sections.length; index++) {
+                sections[index].scrollTop = sections[index].scrollHeight;
+            }
+        }
+        scroll(1);
+    </script>
+    """
+    st.components.v1.html(js, height=0, width=0)
+
+
 st.set_page_config(
     page_title="Text Video",
     page_icon="✨",
@@ -104,8 +122,8 @@ with st.container(border=True):
     params.video_aspect = VideoAspect(video_aspect_ratios[selected_index][1])
     params.voice_name = st.selectbox(
         "朗读声音",
-        options=["zh-CN-XiaoxiaoNeural", "zh-CN-YunjianNeural"],
-        index=0
+        options=VOICE_NAME_LIST,
+        index=15
     )
     params.voice_volume = st.selectbox(
         "朗读音量",
@@ -145,6 +163,7 @@ if start_button:
     task_id = str(uuid4())
     if not params.text_content:
         st.error("视频内容不能为空！！！")
+        scroll_to_bottom()
         st.stop()
 
     log_container = st.empty()
@@ -159,13 +178,16 @@ if start_button:
     st.toast("正在生成视频")
     logger.info("开始生成视频")
     logger.info(util.to_json(params))
+    scroll_to_bottom()
     result = tm.start(task_id=task_id, params=params)
     if not result or "video" not in result:
         st.error("视频生成失败")
         logger.error("视频生成失败")
+        scroll_to_bottom()
         st.stop()
     video = result.get("video", "")
     st.video(data=video)
     st.success("视频生成成功")
     open_task_folder(task_id)
     logger.info("视频生成完成")
+    scroll_to_bottom()
