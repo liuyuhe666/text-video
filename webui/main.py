@@ -142,7 +142,7 @@ with st.container(border=True):
     params.font_name = st.selectbox(
         "字体",
         options=font_name_list,
-        index=0
+        index=2
     )
     font_cols = st.columns([0.3, 0.7])
     with font_cols[0]:
