@@ -24,6 +24,8 @@
 
 ## 视频演示 📺
 
+[BV1dyw7zAEEd](https://www.bilibili.com/video/BV1dyw7zAEEd)
+
 ### 竖屏 9:16
 
 <video src="https://github.com/user-attachments/assets/f9905ca0-38c9-42c1-a7c0-0e809721f3d3"></video>
